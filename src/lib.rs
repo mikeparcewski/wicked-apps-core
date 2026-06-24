@@ -1,4 +1,4 @@
-//! `apps-core` — the shared contract every wicked-estate-universe app programs against.
+//! `wicked-apps-core` — the shared contract every wicked-estate-universe app programs against.
 //!
 //! This is the SPINE for the Rust rebuild of the four apps (governance, orchestration, council,
 //! agent). It is deliberately thin: it re-exports the `wicked-estate` graph essentials, pins the
@@ -20,7 +20,7 @@
 //!
 //! ## Divergences from the build brief (the compiler wins — see the crate-level notes)
 //! - The emit seam (`EmitEvent`/`emit_event`) lives in the `wicked-estate` **binary** (`src/emit.rs`
-//!   is `mod emit;` in `main.rs`), NOT in its library. A path dependency cannot import it. apps-core
+//!   is `mod emit;` in `main.rs`), NOT in its library. A path dependency cannot import it. wicked-apps-core
 //!   therefore ships its OWN [`emit`] seam mirroring the estate shape and shelling to `wicked-bus`.
 //! - The brief asked for `GOVERNS`/`PRODUCES` as `EdgeKind::Other` strings; estate already has
 //!   native `EdgeKind::Governs` / `EdgeKind::Produces` variants. We expose the string constants as

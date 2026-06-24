@@ -1,7 +1,7 @@
 //! Shared event-emit seam for the four apps — the single path every app calls to publish a
 //! `wicked.*` event to the bus.
 //!
-//! ## Why apps-core ships its own seam
+//! ## Why wicked-apps-core ships its own seam
 //! The `wicked-estate` crate has an emit seam at `src/emit.rs`, but it is declared `mod emit;` in
 //! the estate **binary** (`main.rs`) — it is NOT part of the `wicked-estate` library API, so a
 //! path dependency cannot import it. This module mirrors that seam's shape and contract

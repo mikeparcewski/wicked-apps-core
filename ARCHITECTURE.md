@@ -1,4 +1,4 @@
-# apps-core — Architecture
+# wicked-apps-core — Architecture
 
 The thin shared kernel the four wicked-estate-universe apps (governance, orchestration, council, agent) all program against: estate re-exports, the domain string vocabulary, the cross-app event catalog, the `ConformanceClaim` wire type, the store seam, the emit seam, and the `ToNode`/`FromNode` round-trip — defined once.
 
@@ -22,7 +22,7 @@ The entire public surface, as exported from `src/lib.rs` (and `src/emit.rs`):
 
 ## The emit seam
 
-`src/emit.rs` is apps-core's own copy of the estate emit seam. It exists because estate's `emit` is declared `mod emit;` in the estate **binary** (`main.rs`), so it is not part of the `wicked-estate` library API — a path dependency cannot import it. apps-core therefore mirrors that seam's shape and contract for the apps domain.
+`src/emit.rs` is wicked-apps-core's own copy of the estate emit seam. It exists because estate's `emit` is declared `mod emit;` in the estate **binary** (`main.rs`), so it is not part of the `wicked-estate` library API — a path dependency cannot import it. wicked-apps-core therefore mirrors that seam's shape and contract for the apps domain.
 
 - **Shape.** `EmitEvent { event_type, domain, subdomain, payload }`, built with `EmitEvent::new(event_type, domain, subdomain, payload)` where `payload` is a `serde_json::Value`. `emit_event(&event)` spawns the canonical `wicked-bus emit` CLI (`--type/--domain/--subdomain/--payload`), with the program overridable via `EMIT_PROGRAM_ENV` (`WICKED_APPS_EMIT_PROGRAM`).
 - **Fire-and-forget, never silent.** Emit must never block or fail the caller, so it returns `bool` rather than erroring: `true` if the bus child exited zero, `false` if the event was dead-lettered. The failure path is loud and durable — if the CLI can't be spawned or exits non-zero, `dead_letter(..)` appends one NDJSON line (type, domain, subdomain, payload, `deadletter_reason`) to a spool and writes the greppable `DEADLETTER_MARKER` (`"EMIT-DEADLETTER:"`) to stderr. A dropped event is a defect, never a silent loss.
@@ -31,7 +31,7 @@ The entire public surface, as exported from `src/lib.rs` (and `src/emit.rs`):
 
 ## Estate mapping pattern
 
-apps-core does not define per-app storage. Domain entities ride the shared estate graph:
+wicked-apps-core does not define per-app storage. Domain entities ride the shared estate graph:
 
 - An entity persists as a `Node` whose kind is `NodeKind::Other(kind)` — `kind` being a node-kind constant such as `POLICY`. Its stable, round-trippable fields go into `Node.metadata` (a JSON map). Relationships between entities are `Edge`s with `EdgeKind::Other(..)` (or a native estate variant).
 - Each entity gets a stable, source-file-free identity via `synthetic_symbol(kind, id)`, which builds a `SymbolId` from `Symbol::synthetic(SYMBOL_SCHEME, "{kind}/{id}")`. Namespacing by kind means a policy `p1` and a workflow `p1` never collide.
@@ -42,7 +42,7 @@ This is the same pattern `wicked-memory` uses to ride estate: a domain object en
 
 ## Why its own repo
 
-apps-core is a polyrepo shared kernel — the one contract all four apps pin, the way the engines pin `wicked-estate-core`. Locally the apps depend on it via a `path` dependency; at release each app pins a published version. Keeping it in its own repo gives that contract a single home and a single version to bump.
+wicked-apps-core is a polyrepo shared kernel — the one contract all four apps pin, the way the engines pin `wicked-estate-core`. Locally the apps depend on it via a `path` dependency; at release each app pins a published version. Keeping it in its own repo gives that contract a single home and a single version to bump.
 
 ## Build
 

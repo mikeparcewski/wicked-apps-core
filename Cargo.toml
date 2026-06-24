@@ -1,10 +1,10 @@
 [package]
-name = "apps-core"
+name = "wicked-apps-core"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/mikeparcewski/apps-core"
+repository = "https://github.com/mikeparcewski/wicked-apps-core"
 keywords = ["wicked", "agents", "ai", "estate"]
 categories = ["development-tools"]
 description = "Shared kernel for the wicked-estate-universe apps (governance/orchestration/council/agent): estate re-exports, node/edge-kind constants, the cross-app event catalog, ConformanceClaim, the store seam, and the ToNode/FromNode round-trip. Its own repo so each app depends on it via a pinned version (polyrepo)."
