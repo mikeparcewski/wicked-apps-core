@@ -34,25 +34,25 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 pub use wicked_estate_core::{
+    // Symbol identity (synthetic-symbol construction for domain entities).
+    Descriptor,
     // Node model.
     Edge,
     EdgeKind,
-    Language,
-    Location,
-    Node,
-    NodeKind,
-    ResolutionTier,
-    Span,
-    // Symbol identity (synthetic-symbol construction for domain entities).
-    Descriptor,
-    Package,
-    Suffix,
-    Symbol,
-    SymbolId,
     // Storage traits — apps program against these, never a concrete store where avoidable.
     GraphRead,
     GraphStore,
     GraphWrite,
+    Language,
+    Location,
+    Node,
+    NodeKind,
+    Package,
+    ResolutionTier,
+    Span,
+    Suffix,
+    Symbol,
+    SymbolId,
 };
 
 pub use wicked_estate_store::SqliteStore;
@@ -246,8 +246,9 @@ pub const ESTATE_DB_ENV: &str = "WICKED_ESTATE_DB";
 pub fn open_store(path: Option<&str>) -> anyhow::Result<SqliteStore> {
     let resolved: String = match path {
         Some(p) => p.to_string(),
-        None => std::env::var(ESTATE_DB_ENV)
-            .unwrap_or_else(|_| ".wicked-estate/graph.db".to_string()),
+        None => {
+            std::env::var(ESTATE_DB_ENV).unwrap_or_else(|_| ".wicked-estate/graph.db".to_string())
+        }
     };
 
     let store = if resolved == ":memory:" {
@@ -361,10 +362,7 @@ mod tests {
             if ev.contains('-') {
                 continue;
             }
-            assert!(
-                validate_event_type(ev),
-                "catalog event must validate: {ev}"
-            );
+            assert!(validate_event_type(ev), "catalog event must validate: {ev}");
         }
         // Spot-check one from each domain explicitly.
         assert!(validate_event_type(EV_POLICY_REGISTERED));
