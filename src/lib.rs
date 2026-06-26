@@ -84,6 +84,10 @@ pub const CLI_RANKING: &str = "cli_ranking";
 pub const AGENT_SESSION: &str = "agent_session";
 /// A unit of distributed agent work (`wicked-agent`).
 pub const WORK_UNIT: &str = "work_unit";
+/// A coarse cross-app event, written onto the shared store by the [`emit`] seam (replaces the Node
+/// `wicked-bus` subprocess). Queryable via `find_symbols(kind = EVENT)`, ordered by the
+/// timestamp-prefixed node id. See [`emit::emit_event_to`].
+pub const EVENT: &str = "event";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. Edge-kind constants — domain relationships carried via `EdgeKind::Other(&str)`.
