@@ -1,3 +1,7 @@
+> **DEPRECATED**: This repository is no longer maintained. Its functionality is superseded by
+> [wicked-estate v0.13+](https://github.com/mikeparcewski/wicked-estate). This repository
+> will be archived. No further updates will be made.
+
 ```
           _      _            _                                                      
 __      _(_) ___| | _____  __| |       __ _ _ __  _ __  ___        ___ ___  _ __ ___ 
